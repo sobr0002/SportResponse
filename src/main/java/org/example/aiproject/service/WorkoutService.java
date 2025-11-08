@@ -13,5 +13,7 @@ public class WorkoutService {
         this.workoutRepository = workoutRepository;
     }
 
-    public Workout
+    public Workout saveWorkout(Workout workout) {
+        return workoutRepository.save(workout);
+    }
 }
