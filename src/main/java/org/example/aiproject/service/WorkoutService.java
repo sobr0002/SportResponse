@@ -5,7 +5,7 @@ import org.example.aiproject.repository.WorkoutRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkoutService {
+public class WorkoutService implements IWorkoutService {
 
     private final WorkoutRepository workoutRepository;
 
