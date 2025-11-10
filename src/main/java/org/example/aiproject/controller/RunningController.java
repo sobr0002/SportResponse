@@ -53,7 +53,7 @@ public class RunningController {
     }
 
     // --- DELETE ---
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
         service.deleteRunningAnalysis(id);

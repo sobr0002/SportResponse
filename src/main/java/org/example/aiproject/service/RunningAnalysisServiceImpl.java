@@ -69,7 +69,7 @@ public class RunningAnalysisServiceImpl implements RunningAnalysisService {
 
         RunningAnalysis analysis = repository.findById(id).orElseThrow(() -> new RuntimeException("Kunne ikke finde analysen med id " + id));
 
-        repository.delete(analysis);
+        repository.deleteById(analysis.getId());
     }
 
     // --- Hjælpemetoder ---
