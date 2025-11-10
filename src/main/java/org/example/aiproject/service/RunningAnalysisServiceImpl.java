@@ -62,6 +62,16 @@ public class RunningAnalysisServiceImpl implements RunningAnalysisService {
         return mapper.toResponseList(list);
     }
 
+    // --- DELETE ---
+
+    @Override
+    public void deleteRunningAnalysis(Long id) {
+
+        RunningAnalysis analysis = repository.findById(id).orElseThrow(() -> new RuntimeException("Kunne ikke finde analysen med id " + id));
+
+        repository.delete(analysis);
+    }
+
     // --- Hjælpemetoder ---
 
     // Bygger prompt som sendes til Groq AI

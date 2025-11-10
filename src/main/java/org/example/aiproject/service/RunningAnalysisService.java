@@ -20,6 +20,7 @@ public interface RunningAnalysisService {
 
     List<RunningResponse> findAll();     // Hent alle løb
 
+    void deleteRunningAnalysis(Long id);
 
 
 }
