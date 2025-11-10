@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: aiproject-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+
+    ports:
+      - "127.0.0.1:3307:3306"   # containerens port 3306 mappes til vores lokale 3307
+    volumes:
+      - mysql_data:/var/lib/mysql # Bruger volume'et mysql_data
+
+volumes:
+  mysql_data: # Opretter docker-volume med navnet mysql_data
