@@ -51,4 +51,12 @@ public class RunningController {
         return ResponseEntity.ok(response);
 
     }
+
+    // --- DELETE ---
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        service.deleteRunningAnalysis(id);
+        return ResponseEntity.noContent().build(); // HTTP 204 = anmodning behandlet uden fejl
+    }
 }
