@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/running")
+@RequestMapping("/api/runninganalyses")
 public class RunningController {
 
     private final RunningAnalysisService service;
@@ -20,7 +20,7 @@ public class RunningController {
     }
 
     // Analyser et løb (distance + tid) via AI og returnér resultatet
-    @PostMapping("/analyze")
+    @PostMapping()
     public ResponseEntity<RunningResponse> analyze(@RequestBody RunningRequest request) { // @Valid
         RunningResponse response = service.analyzeRun(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
