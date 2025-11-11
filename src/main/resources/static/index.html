@@ -1,27 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Løbeanalyse</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Coach - SportResponse</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Running Coach</h1>
-    <h2>Din coach powered by Groq</h2>
-    <nav id="menu">
-      <button data-view="create">Opret analyse</button>
-      <button data-view="list">Se løb</button>
-    </nav>
-  </header>
+<div class="container">
+    <!-- Header -->
+    <header>
+        <h1>Running Coach</h1>
+        <p class="subtitle">Din coach powered af Groq</p>
+    </header>
 
-  <main id="app"></main>
+    <!-- Main Content -->
+    <main>
+        <!-- Input Section -->
+        <section class="card input-section">
+            <form id="analyzeForm">
+                <div class="form-group">
+                    <label for="distance">Distance (km)</label>
+                    <input
+                            type="number"
+                            id="distance"
+                            step="0.1"
+                            min="0.1"
+                            placeholder="input felt"
+                            required
+                    >
+                </div>
 
-  <script type="module" src="js/api.js"></script>
-  <script type="module" src="js/mains.js"></script>
-  <script type="module" src="js/views/createView.js"></script>
-  <script type="module" src="js/views/listView.js"></script>
+                <div class="form-group">
+                    <label for="time">Tid (minutter)</label>
+                    <input
+                            type="number"
+                            id="time"
+                            min="1"
+                            placeholder="input felt"
+                            required
+                    >
+                </div>
 
+                <!-- Tre knapper som i wireframe -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <span id="btnText">Analyser løb</span>
+                        <span id="spinner" class="spinner" style="display: none;">⏳</span>
+                    </button>
+                    <button type="button" id="showHistoryBtn" class="btn btn-secondary">
+                        Historik
+                    </button>
+                    <button type="button" id="showRecentBtn" class="btn btn-secondary">
+                        Seneste 10
+                    </button>
+                </div>
+            </form>
 
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+        </section>
+
+        <!-- Analysis Result -->
+        <section id="resultSection" class="card result-section" style="display: none;">
+            <h2>Analyse</h2>
+            <div id="analysisContent" class="analysis-content"></div>
+
+            <div id="suggestionsContent" class="suggestions-content"></div>
+        </section>
+
+        <!-- History Section -->
+        <section id="historySection" class="card history-section" style="display: none;">
+            <h2>Historik</h2>
+            <div id="historyRuns" class="runs-grid">
+                <p class="loading">Henter historik...</p>
+            </div>
+        </section>
+
+        <!-- Recent Runs Section -->
+        <section id="recentSection" class="card history-section" style="display: none;">
+            <h2>Seneste 10 løb</h2>
+            <div id="recentRuns" class="runs-grid">
+                <p class="loading">Henter løb...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Running Coach © 2025 | Powered by Groq AI</p>
+    </footer>
+</div>
+
+<script src="js/main.js"></script>
 </body>
 </html>

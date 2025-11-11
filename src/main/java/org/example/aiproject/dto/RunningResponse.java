@@ -15,6 +15,6 @@ public record RunningResponse(
         String analysis,        // AI's analyse: pace, km/t, projections
         String suggestions,     // Ai's 3 træningsforslag
 
-        @JsonFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss") // Formaterer til f.eks 01-01-2025 00:00:00
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime createdAt
 ) {}
