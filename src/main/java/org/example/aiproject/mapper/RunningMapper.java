@@ -17,6 +17,9 @@ public class RunningMapper {
                 analysis.getTimeInMinutes(),
                 analysis.getAnalysis(),
                 analysis.getSuggestions(),
+                analysis.getPace(),
+                analysis.getSpeed(),
+                analysis.getPaceFormatted(),
                 analysis.getCreatedAt()
         );
     }

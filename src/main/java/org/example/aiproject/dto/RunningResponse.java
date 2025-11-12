@@ -15,6 +15,10 @@ public record RunningResponse(
         String analysis,        // AI's analyse: pace, km/t, projections
         String suggestions,     // Ai's 3 træningsforslag
 
+        double pace,            // min/km (fx 5.0)
+        double speed,           // km/t (fx. 12.0)
+        String paceFormatted,   // "5:00 min/km"
+
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime createdAt
 ) {}

@@ -25,6 +25,11 @@ public class RunningAnalysisServiceImpl implements RunningAnalysisService {
     // --- CREATE ---
     @Override
     public RunningResponse analyzeRun(RunningRequest request) {
+        // Beregn pace og speed
+        double pace = request.timeInMinutes() / request.distance();
+        double speed = request.distance() / (request.timeInMinutes() / 60.0);
+        String paceFormatted = formatPace(pace); // "5:00 min/km"
+
         // Byg prompt baseret på distance og tid
         String prompt = groqClient.buildPrompt(request.distance(), request.timeInMinutes());
 
@@ -33,10 +38,20 @@ public class RunningAnalysisServiceImpl implements RunningAnalysisService {
 
         // Parse svaret og gem i databasen
         RunningAnalysis entity = groqClient.extractAnalysis(request, aiText);
+        entity.setPace(pace);
+        entity.setSpeed(speed);
+        entity.setPaceFormatted(paceFormatted);
         RunningAnalysis saved = repository.save(entity);
 
         // Returnér DTO til frontend
         return mapper.toResponse(saved);
+    }
+
+    // -- Hjælpemetode --
+    private String formatPace(double pace) {
+        int minutes = (int) pace;
+        int seconds = (int) Math.round((pace - minutes) * 60);
+        return String.format("%d:%02d min/km", minutes, seconds);
     }
 
     // --- READ ---
@@ -70,7 +85,4 @@ public class RunningAnalysisServiceImpl implements RunningAnalysisService {
 
         repository.deleteById(analysis.getId());
     }
-
-
-
 }

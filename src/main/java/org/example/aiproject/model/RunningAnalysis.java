@@ -20,6 +20,15 @@ public class RunningAnalysis {
     @Column(nullable = false)
     private int timeInMinutes;            // tid i minutter
 
+    @Column(nullable = false)
+    private double pace;  // Matematisk værdi (fx 5.0)
+
+    @Column(nullable = false)
+    private double speed;  // km/t (fx 12.0)
+
+    @Column(length = 20)
+    private String paceFormatted;  // "5:00 min/km"
+
     @Column(length = 1000)
     private String analysis;              // AI's analyse (pace, km/t, projections)
 
@@ -32,10 +41,15 @@ public class RunningAnalysis {
 
     public RunningAnalysis() {}
 
-    public RunningAnalysis(Long id, double distance, int timeInMinutes, String analysis, String suggestions, LocalDateTime createdAt) {
+    public RunningAnalysis(Long id, double distance, int timeInMinutes,
+                           double pace, double speed, String paceFormatted, String analysis,
+                           String suggestions, LocalDateTime createdAt) {
         this.id = id;
         this.distance = distance;
         this.timeInMinutes = timeInMinutes;
+        this.pace = pace;
+        this.speed = speed;
+         // this.paceFormatted = paceFormatted;
         this.analysis = analysis;
         this.suggestions = suggestions;
         this.createdAt = createdAt;
@@ -65,6 +79,30 @@ public class RunningAnalysis {
         this.timeInMinutes = timeInMinutes;
     }
 
+    public double getPace() {
+        return pace;
+    }
+
+    public void setPace(double pace) {
+        this.pace = pace;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public String getPaceFormatted() {
+        return paceFormatted;
+    }
+
+    public void setPaceFormatted(String paceFormatted) {
+        this.paceFormatted = paceFormatted;
+    }
+
     public String getAnalysis() {
         return analysis;
     }
@@ -88,15 +126,4 @@ public class RunningAnalysis {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Override
-    public String toString() {
-        return "RunningAnalysis{" +
-                "id=" + id +
-                ", distance=" + distance +
-                ", timeInMinutes=" + timeInMinutes +
-                ", createdAt=" + createdAt +
-                '}';
-    }
-
 }

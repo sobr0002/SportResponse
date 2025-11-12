@@ -207,6 +207,7 @@ function displayAnalysis(data) {
 
 /**
  * Formaterer analyse tekst til pæn visning
+ * TODO: Denne metode eksistere også i GroqClient i service pakken.
  */
 function formatAnalysis(analysisText) {
     if (!analysisText) return '<p>Ingen analyse tilgængelig.</p>';
@@ -229,6 +230,7 @@ function formatAnalysis(analysisText) {
 
 /**
  * Formaterer træningsforslag til pæn visning
+ * TODO: Denne metode eksistere også i GroqClient i service pakken.
  */
 function formatSuggestions(suggestionsText) {
     if (!suggestionsText) return '<p>Ingen forslag tilgængelige.</p>';
@@ -274,8 +276,8 @@ function displayRuns(runs, container) {
  * Opretter HTML for et enkelt løb card
  */
 function createRunCard(run) {
+    const pace = displayPace();
     const date = formatDate(run.createdAt);
-    const pace = calculatePace(run.distance, run.timeInMinutes);
 
     return `
         <div class="run-card">
@@ -322,11 +324,18 @@ function validateInput(distance, time) {
 /**
  * Beregner pace (min/km) fra distance og tid
  */
-function calculatePace(distance, timeInMinutes) {
-    const pace = timeInMinutes / distance;
-    const minutes = Math.floor(pace);
-    const seconds = Math.round((pace - minutes) * 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+function displayPace(run) {
+    const card = document.createElement('div');
+    card.className = 'run-card';
+    card.innerHTML = `
+        <h3>🏃 ${run.distance} km på ${run.timeInMinutes} min</h3>
+        <p><strong>Pace:</strong> ${run.paceFormatted}</p>
+        <p><strong>Hastighed:</strong> ${run.speed.toFixed(2)} km/t</p>
+        <p><strong>Analyse:</strong> ${run.analysis}</p>
+        <p><strong>Forslag:</strong> ${run.suggestions}</p>
+        <button onclick="deleteRun(${run.id})">Slet</button>
+    `;
+    return card;
 }
 
 /**
@@ -334,13 +343,13 @@ function calculatePace(distance, timeInMinutes) {
  */
 function formatDate(dateString) {
     const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0'); // padstart() sikrer at der altid er 2 cifre, f.eks. 01 til 09
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
-    return `${day}-${month}-${year} kl. ${hours}:${minutes}`;
+    return `${day}-${month}-${year} kl. ${hours}:${minutes}`; // js template literal / string
 }
 
 /**
@@ -349,7 +358,7 @@ function formatDate(dateString) {
 function showLoading(isLoading) {
     if (isLoading) {
         btnText.textContent = 'Analyserer...';
-        spinner.style.display = 'inline-block';
+        spinner.style.display = 'inline-block'; // viser elementet i samme linje som teksten og fylder hele boksen
         analyzeForm.querySelector('button[type="submit"]').disabled = true;
     } else {
         btnText.textContent = 'Analyser løb';
@@ -363,7 +372,7 @@ function showLoading(isLoading) {
  */
 function showError(message) {
     errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
+    errorMessage.style.display = 'block'; // viser elementet som et block element, fylder hele linjen
 
     // Scroll til fejlbeskeden
     errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
