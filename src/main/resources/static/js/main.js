@@ -1,9 +1,8 @@
 // main.js
 
-// ===== CONFIGURATION =====
 const API_URL = 'http://localhost:8080/api/running';
 
-// ===== DOM ELEMENTS =====
+// --- DOM ELEMENTER ---
 const analyzeForm = document.getElementById('analyzeForm');
 const distanceInput = document.getElementById('distance');
 const timeInput = document.getElementById('time');
@@ -11,27 +10,27 @@ const btnText = document.getElementById('btnText');
 const spinner = document.getElementById('spinner');
 const errorMessage = document.getElementById('errorMessage');
 
-// Buttons
+// KNAPPER
 const showHistoryBtn = document.getElementById('showHistoryBtn');
 const showRecentBtn = document.getElementById('showRecentBtn');
 
-// Sections
+// SEKTIONER
 const resultSection = document.getElementById('resultSection');
 const historySection = document.getElementById('historySection');
 const recentSection = document.getElementById('recentSection');
 
-// Content areas
+// SELVE INDHOLDET
 const analysisContent = document.getElementById('analysisContent');
 const suggestionsContent = document.getElementById('suggestionsContent');
 const historyRuns = document.getElementById('historyRuns');
 const recentRuns = document.getElementById('recentRuns');
 
-// ===== EVENT LISTENERS =====
+// --- EVENT LISTENERS ---
 analyzeForm.addEventListener('submit', handleAnalyze);
 showHistoryBtn.addEventListener('click', showHistory);
 showRecentBtn.addEventListener('click', showRecent);
 
-// ===== MAIN FUNCTIONS =====
+// --- HOVEDFUNKTIONER ---
 
 /**
  * Håndterer formular submit - analyserer løb via AI
@@ -175,9 +174,9 @@ async function deleteRun(id) {
         const recentVisible = recentSection.style.display === 'block';
 
         if (historyVisible) {
-            showHistory();
+            await showHistory();
         } else if (recentVisible) {
-            showRecent();
+            await showRecent();
         }
 
     } catch (error) {
@@ -220,7 +219,7 @@ function formatAnalysis(analysisText) {
         if (line.includes('min/km') || line.includes('km/t')) {
             return `<p><strong>${line}</strong></p>`;
         }
-        // Fremhæv halvmarathon og marathon
+        // Fremhæv halvmaraton og marathon
         if (line.toLowerCase().includes('marathon')) {
             return `<p><strong>${line}</strong></p>`;
         }
@@ -276,7 +275,6 @@ function displayRuns(runs, container) {
  * Opretter HTML for et enkelt løb card
  */
 function createRunCard(run) {
-    const pace = displayPace();
     const date = formatDate(run.createdAt);
 
     return `
@@ -284,7 +282,7 @@ function createRunCard(run) {
             <div class="run-info">
                 <h4>🏃 ${run.distance} km på ${run.timeInMinutes} minutter</h4>
                 <p class="run-meta">
-                    Pace: ${pace} min/km | ${date}
+                    Pace: ${run.paceFormatted} | ${date}
                 </p>
             </div>
             <button class="btn-delete" data-id="${run.id}">Slet</button>
@@ -292,7 +290,7 @@ function createRunCard(run) {
     `;
 }
 
-// ===== HELPER FUNCTIONS =====
+// --- Hjælpemetoder ---
 
 /**
  * Validerer input fra formularen
@@ -321,22 +319,7 @@ function validateInput(distance, time) {
     return true;
 }
 
-/**
- * Beregner pace (min/km) fra distance og tid
- */
-function displayPace(run) {
-    const card = document.createElement('div');
-    card.className = 'run-card';
-    card.innerHTML = `
-        <h3>🏃 ${run.distance} km på ${run.timeInMinutes} min</h3>
-        <p><strong>Pace:</strong> ${run.paceFormatted}</p>
-        <p><strong>Hastighed:</strong> ${run.speed.toFixed(2)} km/t</p>
-        <p><strong>Analyse:</strong> ${run.analysis}</p>
-        <p><strong>Forslag:</strong> ${run.suggestions}</p>
-        <button onclick="deleteRun(${run.id})">Slet</button>
-    `;
-    return card;
-}
+
 
 /**
  * Formaterer dato til dansk format
@@ -394,7 +377,6 @@ function hideAllSections() {
     recentSection.style.display = 'none';
 }
 
-// ===== INITIALIZATION =====
 // Når siden loader, vis ingenting - vent på bruger interaction
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Running Coach initialiseret! 🏃');
