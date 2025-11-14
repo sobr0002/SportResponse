@@ -206,7 +206,6 @@ function displayAnalysis(data) {
 
 /**
  * Formaterer analyse tekst til pæn visning
- * TODO: Denne metode eksistere også i GroqClient i service pakken.
  */
 function formatAnalysis(analysisText) {
     if (!analysisText) return '<p>Ingen analyse tilgængelig.</p>';
@@ -229,26 +228,35 @@ function formatAnalysis(analysisText) {
 
 /**
  * Formaterer træningsforslag til pæn visning
- * TODO: Denne metode eksistere også i GroqClient i service pakken.
  */
-function formatSuggestions(suggestionsText) {
+
+
+function formatSuggestions(suggestionsText) { // Får String fra backend AI response
     if (!suggestionsText) return '<p>Ingen forslag tilgængelige.</p>';
 
-    // Split på dobbelt linjeskift (hvert forslag)
+    // Forslagene splittes til et array. Èt forslag = ét element, som er separeret af 2 linjeskift
     const suggestions = suggestionsText.split('\n\n').filter(s => s.trim() !== '');
 
+    // Hvert forslag konverteres til type og description, når der er kolon
     return suggestions.map(suggestion => {
-        // Split type og beskrivelse
-        const [type, ...descParts] = suggestion.split(':');
-        const description = descParts.join(':').trim();
+        const colonIndex = suggestion.indexOf(':');
+
+        let type = suggestion;
+        let description = '';
+
+        // .slice() deler forslaget op i type og description, hvis der er kolon
+        if (colonIndex !== -1) {
+            type = suggestion.slice(0, colonIndex).trim(); // Position før kolon
+            description = suggestion.slice(colonIndex + 1).trim(); // Position efter kolon
+        }
 
         return `
-            <div style="margin-bottom: 15px; padding: 15px; background: white; border-radius: 8px;">
-                <h4 style="color: #6B7280; margin-bottom: 8px;">💡 ${type}</h4>
-                <p style="color: #374151; margin: 0;">${description}</p>
+            <div class="suggestion-card">
+                <h4>💡 ${type}</h4>
+                <p>${description}</p>
             </div>
         `;
-    }).join('');
+    }).join(''); // Samler til én String
 }
 
 /**
