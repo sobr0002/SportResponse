@@ -196,9 +196,11 @@ function displayAnalysis(data) {
 
     // Vis analyse (pace, speed, estimater)
     analysisContent.innerHTML = formatAnalysis(data.analysis);
+    //analysisContent.innerHTML = data.analysis;
 
     // Vis træningsforslag
     suggestionsContent.innerHTML = formatSuggestions(data.suggestions);
+    //suggestionsContent.innerHTML = data.suggestions;
 
     // Scroll til resultatet
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -207,6 +209,8 @@ function displayAnalysis(data) {
 /**
  * Formaterer analyse tekst til pæn visning
  */
+
+
 function formatAnalysis(analysisText) {
     if (!analysisText) return '<p>Ingen analyse tilgængelig.</p>';
 
@@ -258,6 +262,7 @@ function formatSuggestions(suggestionsText) { // Får String fra backend AI resp
         `;
     }).join(''); // Samler til én String
 }
+
 
 /**
  * Viser løb i et grid (historik eller recent)

@@ -15,7 +15,7 @@ public interface RunningAnalysisRepository extends JpaRepository<RunningAnalysis
     // - findAll()
     // - deleteById(Long id)
 
-    // ===== NYTTIGE CUSTOM QUERIES =====
+    // --- NYTTIGE CUSTOM QUERIES ---
 
     // Hent de seneste 10 løb (til historik på frontend)
     List<RunningAnalysis> findTop10ByOrderByCreatedAtDesc();

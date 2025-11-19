@@ -20,6 +20,8 @@ public class GroqClientImpl implements GroqClient {
     @Value("${groq.api.key}")
     private String openApiKey; // Nøglen skal ligge i vores environment variables
 
+
+    // Injicerer WebClient i konstruktør - bygger webclient-objekt
     public GroqClientImpl(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://api.groq.com/openai/v1/chat/completions").build();
     }
@@ -43,10 +45,10 @@ public class GroqClientImpl implements GroqClient {
             Map<String, Object> response = webClient.post()
                     .contentType(MediaType.APPLICATION_JSON)
                     .headers(headers -> headers.setBearerAuth(openApiKey))
-                    .bodyValue(requestBody)
-                    .retrieve()
+                    .bodyValue(requestBody)// sender JSON-data
+                    .retrieve() // Henter response
                     .bodyToMono(Map.class) // Deserialiserer JSON til Running-objekt
-                    .block();
+                    .block(); // Venter på svar fra webclient før resten af koden køres
 
             if (response == null) {
                 return "Intet svar fra Groq API.";
@@ -125,7 +127,7 @@ public class GroqClientImpl implements GroqClient {
             
             Retningslinjer:
             1. BRUG DE BEREGNEDE VÆRDIER OVENFOR - lav IKKE dine egne beregninger.
-            2. Estimer halvmarathon/marathon tider baseret på den givne pace.
+            2. Estimer halvmaraton/maratontider baseret på den givne pace.
             3. Hvis løbet er under 3 km, nævn at estimatet kan være usikkert.
             4. Angiv pace med KOLON (fx 3:50 min/km), IKKE komma eller punktum.
             5. Angiv hastighed i km/t med komma som decimalseparator (fx 17,14 km/t).
